@@ -26,9 +26,10 @@ module.exports = {
     // always use semi
     'semi': ['error', 'always'],
     // indent
-    'indent': 0,
+    'indent': ['off'],
     'no-trailing-spaces': ['warn'],
-    'space-before-function-paren': ['off']
+    'space-before-function-paren': ['off'],
+    
 
   }
 }

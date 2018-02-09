@@ -1,23 +1,21 @@
 <template>
   <div id="app">
-    <v-header></v-header>
+    <v-header :seller="seller"></v-header>
     <div class="tab border-1px">
         <router-link class="tab-item" tag="div" to="/goods">商品</router-link>
         <router-link class="tab-item" tag="div" to="/rating">评价</router-link>
         <router-link class="tab-item" tag="div" to="/seller">店铺</router-link>
     </div>
-
     <router-view></router-view>
-
-    <div class="footer">
-      I am a footer
-    </div>
 
   </div>
 </template>
 
 <script>
   import header from 'components/header/header';
+
+  // const RESULTCODE_OK = 0;
+
   export default {
     data() {
       return {
@@ -26,6 +24,12 @@
     },
     components: {
       'v-header': header
+    },
+    created() {
+      this.$http.get('/waimai/api/seller').then((response) => {
+          console.log(response);
+          this.seller = response.data.seller;
+      });
     }
   };
 </script>
