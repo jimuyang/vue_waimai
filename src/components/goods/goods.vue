@@ -37,12 +37,14 @@
       </ul>
 
     </div>
+    <shopcart :min-price="seller.minPrice" :delivery-price="seller.deliveryPrice"></shopcart>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
   import actIcon from 'components/act-icon/act-icon';
   import BScroll from 'better-scroll';
+  import shopcart from 'components/shopcart/shopcart';
 
   export default {
     props: {
@@ -82,7 +84,8 @@
       });
     },
     components: {
-      'act-icon': actIcon
+      'act-icon': actIcon,
+      'shopcart': shopcart
     },
     methods: {
       _initScroll() {

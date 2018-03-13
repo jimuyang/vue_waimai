@@ -6,7 +6,7 @@
         <router-link class="tab-item" tag="div" to="/rating">评价</router-link>
         <router-link class="tab-item" tag="div" to="/seller">店铺</router-link>
     </div>
-    <router-view></router-view>
+    <router-view :seller="seller"></router-view>
 
   </div>
 </template>
