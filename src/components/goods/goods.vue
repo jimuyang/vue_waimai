@@ -30,6 +30,9 @@
                   <span class="new">￥{{food.price}}</span>
                   <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                 </div>
+                <div class="cart-control-wrapper">
+                  <cart-control :food="food"/>
+                </div>
               </div>
             </li>
           </ul>
@@ -45,6 +48,7 @@
   import actIcon from 'components/act-icon/act-icon';
   import BScroll from 'better-scroll';
   import shopcart from 'components/shopcart/shopcart';
+  import cartControl from 'src/components/cart-control/cart-control';
 
   export default {
     props: {
@@ -85,7 +89,8 @@
     },
     components: {
       'act-icon': actIcon,
-      'shopcart': shopcart
+      'shopcart': shopcart,
+      'cart-control': cartControl
     },
     methods: {
       _initScroll() {
@@ -93,6 +98,7 @@
           click: true
         });
         this.foodScroll = new BScroll(this.$refs.foodWrapper, {
+          click: true,
           probeType: 3
         });
         this.foodScroll.on('scroll', (pos) => {
@@ -209,4 +215,8 @@
               font-size 10px
               color rgb(147, 153, 159)
 
+          .cart-control-wrapper
+            position: absolute
+            bottom: 12px
+            right: 0px
 </style>
