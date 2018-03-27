@@ -1,6 +1,6 @@
 # vue_waimai
 
-> Vue Waimai
+> Vue2.0 实现的仿饿了么前端项目
 
 ## Build Setup
 
