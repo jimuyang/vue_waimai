@@ -1,10 +1,11 @@
-import Vue from 'vue';
+// import Vue from 'vue';
 import VueRouter from 'vue-router';
 import goods from 'components/goods/goods';
 import seller from 'components/seller/seller';
 import rating from 'components/rating/rating';
 
-Vue.use(VueRouter);
+// 这里我觉得这样use是没有意义的 new Vue()的时候将router传了进去
+// Vue.use(VueRouter);
 
 export default new VueRouter({
   mode: 'hash',
