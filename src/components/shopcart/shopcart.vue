@@ -133,7 +133,7 @@
           }
         }
       },
-      dropping(el) {
+      dropping(el, done) {
         /* eslint-disable no-unused-vars */
         let rf = el.offsetHeight;
         this.$nextTick(() => {
