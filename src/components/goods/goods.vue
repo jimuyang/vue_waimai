@@ -31,7 +31,7 @@
                   <span class="old" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                 </div>
                 <div class="cart-control-wrapper">
-                  <cart-control :food="food"/>
+                  <cart-control @add="addFood" :food="food"/>
                 </div>
               </div>
             </li>
@@ -40,7 +40,7 @@
       </ul>
 
     </div>
-    <shopcart :min-price="seller.minPrice" :delivery-price="seller.deliveryPrice"></shopcart>
+    <shopcart ref="shopcart" :min-price="seller.minPrice" :delivery-price="seller.deliveryPrice"/>
   </div>
 
 </template>
@@ -58,7 +58,7 @@
         type: Object
       }
     },
-    data() {
+    data: function() {
       return {
         goods: [],
         scrollY: 0,
@@ -78,7 +78,7 @@
         return 0;
       }
     },
-    created() {
+    created: function () {
       this.$http.get('/waimai/api/goods').then((response) => {
         console.log(response);
         this.goods = response.data.goods;
@@ -96,6 +96,15 @@
       'food-info': foodInfo
     },
     methods: {
+      addFood(target) {
+        this._drop(target);
+      },
+      _drop(target) {
+        // 体验优化,异步执行下落动画
+        this.$nextTick(() => {
+          this.$refs.shopcart.drop(target);
+        });
+      },
       _initScroll() {
         this.menuScroll = new BScroll(this.$refs.menuWrapper, {
           click: true
