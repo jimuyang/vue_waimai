@@ -1,13 +1,14 @@
 <template>
   <div id="app">
-    <v-header :seller="seller"></v-header>
+    <v-header :seller="seller"/>
     <div class="tab border-1px">
-        <router-link class="tab-item" tag="div" to="/goods">商品</router-link>
-        <router-link class="tab-item" tag="div" to="/rating">评价</router-link>
-        <router-link class="tab-item" tag="div" to="/seller">店铺</router-link>
+      <router-link class="tab-item" tag="div" to="/goods">商品</router-link>
+      <router-link class="tab-item" tag="div" to="/rating">评价</router-link>
+      <router-link class="tab-item" tag="div" to="/seller">店铺</router-link>
     </div>
-    <router-view :seller="seller"></router-view>
-
+    <keep-alive>
+      <router-view :seller="seller" keep-alive/>
+    </keep-alive>
   </div>
 </template>
 
@@ -27,8 +28,8 @@
     },
     created() {
       this.$http.get('/waimai/api/seller').then((response) => {
-          console.log(response);
-          this.seller = response.data.seller;
+        console.log(response);
+        this.seller = response.data.seller;
       });
     }
   };
@@ -44,11 +45,10 @@
       height: 40px
       line-height: 40px
       //border-bottom: 1px solid rgba(7,17,27,0.1)
-      border-1px(rgba(7,17,27,0.1))
+      border-1px(rgba(7, 17, 27, 0.1))
       .tab-item
         flex: 1
-        text-align:center
-
+        text-align: center
 
 
 </style>
