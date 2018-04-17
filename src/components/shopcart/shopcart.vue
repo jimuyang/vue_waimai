@@ -1,7 +1,6 @@
 <template>
   <div class="shopcart">
-
-    <div class="content">
+    <div class="content" :onclick="toggleList">
       <div class="content-left">
         <div class="logo-wrapper">
           <div class="logo" :class="{'highlight':totalCount>0}">
@@ -27,10 +26,38 @@
       </div>
     </div>
 
+    <transition name="fold">
+    <div class="shopcart-list" v-show="listShow">
+      <div class="list-header">
+        <h1 class="title">购物车</h1>
+        <span class="clear">清空</span>
+      </div>
+      <div class="list-content">
+        <ul>
+          <li class="food" v-for="food in selectFoods">
+            <span class="name">{{food.name}}</span>
+            <div class="price">
+              <span>¥ {{food.price*food.count}}</span>
+            </div>
+            <div class="cart-control-wrapper">
+              <cart-control :food="food"/>
+            </div>
+          </li>
+        </ul>
+
+
+      </div>
+
+    </div>
+
+    </transition>
+
   </div>
 </template>
 
 <script type="es6">
+  import CartControl from "../cart-control/cart-control";
+
   export default {
     name: 'shopcart',
     props: {
@@ -53,6 +80,9 @@
           ];
         }
       }
+    },
+    components: {
+      CartControl
     },
     data: function () {
       return {
@@ -102,6 +132,12 @@
         } else {
           return 'enough';
         }
+      },
+      listShow() {
+        if (!this.totalCount) {
+          return false;
+        }
+        return !this.fold;
       }
     },
     methods: {
@@ -151,6 +187,12 @@
           ball.show = false;
           el.style.display = 'none';
         }
+      },
+      toggleList() {
+        if (!this.totalCount) {
+          return;
+        }
+        this.fold = !this.fold;
       }
 
     }
@@ -258,5 +300,11 @@
           border-radius: 50%
           background: rgb(0, 160, 220)
           transition: all 0.4s linear
+
+    .shopcart-list
+      position: absolute
+      left: 0
+      top: 0
+
 
 </style>

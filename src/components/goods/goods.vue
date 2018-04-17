@@ -40,7 +40,8 @@
       </ul>
 
     </div>
-    <shopcart ref="shopcart" :min-price="seller.minPrice" :delivery-price="seller.deliveryPrice"/>
+    <shopcart ref="shopcart" :selectFoods="selectFoods" :min-price="seller.minPrice"
+              :delivery-price="seller.deliveryPrice"/>
   </div>
 
 </template>
@@ -58,7 +59,7 @@
         type: Object
       }
     },
-    data: function() {
+    data: function () {
       return {
         goods: [],
         scrollY: 0,
@@ -66,6 +67,17 @@
       };
     },
     computed: {
+      selectFoods() {
+        let foods = [];
+        this.goods.forEach((good) => {
+          good.foods.forEach((food) => {
+            if (food.count) {
+              foods.push(food);
+            }
+          });
+        });
+        return foods;
+      },
       currentIndex() {
         for (let i = 0; i < this.foodHeightList.length; i++) {
           let current = this.foodHeightList[i];
