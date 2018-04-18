@@ -1,6 +1,6 @@
 <template>
   <div class="shopcart">
-    <div class="content" :onclick="toggleList">
+    <div class="content" @click="toggleList">
       <div class="content-left">
         <div class="logo-wrapper">
           <div class="logo" :class="{'highlight':totalCount>0}">
@@ -27,28 +27,28 @@
     </div>
 
     <transition name="fold">
-    <div class="shopcart-list" v-show="listShow">
-      <div class="list-header">
-        <h1 class="title">购物车</h1>
-        <span class="clear">清空</span>
+      <div class="shopcart-list" v-show="listShow">
+        <div class="list-header">
+          <h1 class="title">购物车</h1>
+          <span class="clear">清空</span>
+        </div>
+        <div class="list-content" ref="list-content">
+          <ul>
+            <li class="food" v-for="food in selectFoods">
+              <span class="name">{{food.name}}</span>
+              <div class="price">
+                <span>¥ {{food.price*food.count}}</span>
+              </div>
+              <div class="cart-control-wrapper">
+                <cart-control @add="addFood" :food="food"/>
+              </div>
+            </li>
+          </ul>
+
+
+        </div>
+
       </div>
-      <div class="list-content">
-        <ul>
-          <li class="food" v-for="food in selectFoods">
-            <span class="name">{{food.name}}</span>
-            <div class="price">
-              <span>¥ {{food.price*food.count}}</span>
-            </div>
-            <div class="cart-control-wrapper">
-              <cart-control :food="food"/>
-            </div>
-          </li>
-        </ul>
-
-
-      </div>
-
-    </div>
 
     </transition>
 
@@ -57,6 +57,7 @@
 
 <script type="es6">
   import CartControl from "../cart-control/cart-control";
+  import BScroll from "better-scroll";
 
   export default {
     name: 'shopcart',
@@ -137,7 +138,20 @@
         if (!this.totalCount) {
           return false;
         }
-        return !this.fold;
+        let show = !this.fold;
+
+        if (show) {
+          this.$nextTick(() => {
+            if (!this.scroll) {
+              this.scroll = new BScroll(this.$refs["list-content"], {
+                click: true
+              });
+            }else {
+              this.scroll.refresh();
+            }
+          });
+        }
+        return show;
       }
     },
     methods: {
@@ -151,6 +165,9 @@
             return;
           }
         }
+      },
+      addFood(target) {
+        this.drop(target);
       },
       beforeDrop(el) {
         let count = this.balls.length;
@@ -200,6 +217,8 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
+  @import "../../common/stylus/mixin.styl"
+
   .shopcart
     position: fixed
     left: 0
@@ -305,6 +324,52 @@
       position: absolute
       left: 0
       top: 0
+      z-index: -1
+      width: 100%
+      transform: translate3d(0, -100%, 0)
+      &.fold-enter-active, &.fold-leave-active
+        transition: all 0.5s
+      &.fold-enter, &.fold-leave-active
+        transform: translate3d(0, 0, 0)
+      .list-header
+        height: 40px
+        line-height: 40px
+        padding: 0 18px
+        background: #f3f5f7
+        border-bottom: 1px solid rgba(7, 17, 27, 0.1)
+        .title
+          float: left
+          font-size: 14px
+          color: rgb(7, 17, 27)
+        .clear
+          float: right
+          font-size: 12px
+          color: rgb(0, 160, 220)
 
-
+      .list-content
+        padding: 0 18px
+        max-height: 217px
+        overflow: hidden
+        background: #fff
+        .food
+          position: relative
+          padding: 12px 0
+          box-sizing: border-box
+          border-1px(rgba(7, 17, 27, 0.1))
+          .name
+            line-height: 24px
+            font-size: 14px
+            color: rgb(7, 17, 27)
+          .price
+            position: absolute
+            right: 90px
+            bottom: 12px
+            line-height: 24px
+            font-size: 14px
+            font-weight: 700
+            color: rgb(240, 20, 20)
+          .cart-control-wrapper
+            position: absolute
+            right: 0
+            bottom: 6px
 </style>
