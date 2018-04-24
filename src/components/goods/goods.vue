@@ -1,5 +1,6 @@
 <template>
-  <div class="goods">
+  <div>
+    <div class="goods">
     <div class="menu-wrapper" ref="menuWrapper">
       <ul>
         <li class="menu-item" :class="{'current':index===currentIndex}" v-for="(menuItem,index) in goods" :key="index"
@@ -43,13 +44,14 @@
     <shopcart ref="shopcart" :selectFoods="selectFoods" :min-price="seller.minPrice"
               :delivery-price="seller.deliveryPrice"/>
   </div>
-
+    <food-info @add="addFood" :food="selectedFood" ref="food-info"/>
+  </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import actIcon from 'components/act-icon/act-icon';
+  import actIcon from 'src/components/act-icon/act-icon';
   import BScroll from 'better-scroll';
-  import shopcart from 'components/shopcart/shopcart';
+  import shopcart from 'src/components/shopcart/shopcart';
   import cartControl from 'src/components/cart-control/cart-control';
   import foodInfo from 'src/components/food-info/food-info';
 
@@ -63,7 +65,8 @@
       return {
         goods: [],
         scrollY: 0,
-        foodHeightList: []
+        foodHeightList: [],
+        selectedFood: {}
       };
     },
     computed: {
@@ -111,6 +114,13 @@
       addFood(target) {
         this._drop(target);
       },
+      selectFood(food, event) {
+        if (!event._constructed) {
+          return;
+        }
+        this.selectedFood = food;
+        this.$refs['food-info'].show();
+      },
       _drop(target) {
         // 体验优化,异步执行下落动画
         this.$nextTick(() => {
@@ -145,9 +155,6 @@
         let foodList = this.$refs.foodWrapper.getElementsByClassName('food-list-hook');
         let el = foodList[index];
         this.foodScroll.scrollToElement(el, 300);
-      },
-      selectFood(selectedFood, $event) {
-
       }
     }
   };
