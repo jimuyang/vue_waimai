@@ -28,7 +28,7 @@
           </div>
 
           <transition name="fade">
-            <div @click="addFirst" class="buy" v-show="!food.count || food.count===0">
+            <div @click.stop.prevent="addFirst" class="buy" v-show="!food.count || food.count===0">
               加入购物车
             </div>
           </transition>
